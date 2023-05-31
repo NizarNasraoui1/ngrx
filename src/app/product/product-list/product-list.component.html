@@ -1,0 +1,9 @@
+<p>product-list works!</p>
+
+<ul>
+  <li *ngFor="let item of products$ | async">
+    {{item.title}}
+  </li>
+</ul>
+
+<button (click)="addProduct()">click me!</button>
