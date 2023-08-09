@@ -10,6 +10,7 @@ import { map, Observable } from 'rxjs';
 import { ProductWrapper } from "../ngrx/productWrapper.model";
 import { ProductAppState } from '../ngrx/product-app-state';
 import { Product } from '../ngrx/product.model';
+import { ProductFacade } from '../ngrx/product.facade';
 
 @Component({
   selector: 'app-product-list',
@@ -19,21 +20,21 @@ import { Product } from '../ngrx/product.model';
 export class ProductListComponent implements OnInit{
   productsWrapper$:Observable<ProductWrapper>;
   products$:Observable<Product[]>;
-  constructor(private store:Store<ProductAppState>,private service:ProductService){
+  constructor(private store:Store<ProductAppState>,private service:ProductService,private productFacade:ProductFacade){
 
   }
   ngOnInit(): void {
     this.store.dispatch(new productActions.LoadProducts());
     this.productsWrapper$=this.store.pipe(select(productSelectors.getProducts));
     this.products$=this.productsWrapper$.pipe(map((p)=>p.products));
-
-
-
-
   }
 
   addProduct(){
     this.store.dispatch(new productActions.AddProduct({"title":"new title"}));
+  }
+
+  addProductWithFacade(){
+    this.productFacade.addProduct(new productActions.AddProduct({"title":"new title"}));
   }
 
 
